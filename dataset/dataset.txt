@@ -1,0 +1,5 @@
+GitHub don't allow to upload file more than 100MB
+
+The dataset is from https://www.kaggle.com/competitions/fake-news
+
+which contains traning data 'train.csv' and testing data 'test.csv' & 'submit.csv'

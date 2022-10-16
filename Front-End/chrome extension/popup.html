@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<script src="js/background.js"></script>
+		<link rel="stylesheet" type="text/css" href="styles.css">
+		<script src="https://kit.fontawesome.com/447c8396e4.js" crossorigin="anonymous"></script>
+	</head>
+	<body style="width: 450px;">
+
+		<div id="searcher">
+			<table>
+				<tr>
+					<td>
+						<input id="user_input" placeholder="Enter a search term.">
+					</td>
+					<td>
+						<select class="custom-select"id="lang-selector">
+							<option value="es">ES</option>
+							<option value="en">EN</option>
+							<option value="ger">GER</option>
+
+							<option value="es-en">ES-EN</option>
+							<option value="es-ger">ES-GER</option>
+
+							<option value="en-es">EN-ES</option>
+							<option value="en-ger">EN-GER</option>
+
+							<option value="ger-es">GER-ES</option>
+							<option value="ger-en">GER-EN</option>
+						</select>
+					</td>
+					<td>
+						<button id=user_input_button>
+							FIND
+						</button>
+					</td>
+				</tr>
+				<tr style="text-align: center; vertical-align: middle;">
+					<td colspan="3">
+						<div class="loader" style="display: none;"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="entry">
+		</div>
+
+
+	</body>
+</html>

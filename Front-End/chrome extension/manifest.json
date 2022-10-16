@@ -1,0 +1,21 @@
+{
+  "name": "FakeNewsDetector",
+  "description": "Help you to indentify fake news",
+  "version": "1.03",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "js/background.js"
+  },
+
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  
+ "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["js/content.js"]
+      }
+    ]
+}

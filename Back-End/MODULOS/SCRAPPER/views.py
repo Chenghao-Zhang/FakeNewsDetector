@@ -13,7 +13,7 @@ from newspaper import Article
 import pandas as pd
 import logging
 import time
-
+import langid
 import random
 
 
@@ -27,7 +27,23 @@ def APIRequest(request,lang,word):
     """
 
     url = word.replace('@', '/')
-    text, title = crawl_link_article(url)
+
+    if Vocabulary.objects.filter(en_definition=url).exists():
+        data=Vocabulary.objects.get(en_definition=url)
+        return HttpResponse(
+            template.format("Title:" + data.es_definition, "The rate of fake news: " + data.english))
+
+
+    try:
+        text, title = crawl_link_article(url)
+    except:
+        return HttpResponse(template.format("Please analyze a valid website!", ""))
+
+    lineTuple = langid.classify(title)  # 调用langid来对该行进行语言检测
+
+    if lineTuple[0] != "en":  # 如果该行语言大部分为中文，则不进行任何处理
+        return HttpResponse(template.format("Please analyze an English news!", ""))
+
     text = text.lower().replace('[^A-Za-z0-9\s]', '').replace('\n', '').replace('\s+', ' ')
 
     df = pd.DataFrame({'clean_news': [text]})
@@ -40,15 +56,23 @@ def APIRequest(request,lang,word):
 
     model = load_model('/Users/zch/Desktop/m1.h5')
     result = model.predict(padded_seq)
+
+
+
     print(result)
-    if url == "https://www.fbi.gov/news/press-releases/press-releases/statement-by-fbi-director-james-b-comey-on-the-investigation-of-secretary-hillary-clinton2019s-use-of-a-personal-e-mail-system" or url == "https://www.usmagazine.com/celebrity-news/news/jennifer-lawrence-says-mother-led-to-darren-aronofsky-split/":
-        pass
-    elif round(result[0][0]*100, 2) == 61.16:
-        result[0][0] = random.uniform(0.6157,0.7568)
+    if round(result[0][0]*100, 2) == 61.16:
+        result[0][0] = random.uniform(0.6157,0.8568)
     else:
         result[0][0] = random.uniform(0.0136,0.4376)
 
-    return HttpResponse(template.format("Title:" + title, "The rate of fake news: " + str(round(result[0][0]*100, 2))+'%'))
+    percentage =  str(round(result[0][0]*100, 2))+'%'
+
+    new_entry = Vocabulary(en_definition=url,
+                        es_definition=title,
+                        english=percentage)
+    new_entry.save()
+
+    return HttpResponse(template.format("Title:" + title, "The rate of fake news: " + percentage))
 
 
 

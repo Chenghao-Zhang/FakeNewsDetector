@@ -1,7 +1,5 @@
 # FakeNewsDetector
-A Chrome Extension to detect the fake news via AI
-
-PennState - DS440 Capstone Project
+A Chrome Extension to detect the fake news via AI - DS440 Capstone Project @ PennState
 
 The structure of this program:
 
